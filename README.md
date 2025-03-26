@@ -8,76 +8,52 @@
 
 ## Summary
 
-In this project, I will develop a parallel implementation of the K-Means clustering algorithm designed to efficiently process large-scale datasets. The project leverages Amazon Trainium for accelerating compute-intensive operations and uses distributed-memory parallelism to scale across multiple nodes. The focus is on achieving high performance and scalability while maintaining clustering accuracy.
+We propose to implement a parallel K-Means clustering algorithm that scales to large datasets by leveraging Amazon Trainium for accelerating the compute-intensive distance computations. The project uses MPI for distributed-memory parallelism combined with Trainium’s Neuron SDK to offload critical operations, with the goal of achieving significant speedup and improved clustering efficiency compared to a serial baseline.
 
 ---
 
 ## Background
 
-K-Means clustering is a fundamental unsupervised learning algorithm used in various application domains, such as market segmentation, image processing, and recommendation systems. With the growing size of datasets in machine learning and data analytics, a single-threaded K-Means algorithm can become a major performance bottleneck. By parallelizing the algorithm, we aim to reduce execution time significantly and enable clustering on datasets that were previously intractable.
-
-This project will work with large, synthetic, and real-world datasets to benchmark the performance improvements. The algorithm will be implemented using distributed-memory programming, allowing multiple nodes to cooperate in clustering data points. Amazon Trainium, a dedicated hardware accelerator for machine learning, will be utilized to speed up the most compute-intensive parts of the algorithm.
+K-Means clustering partitions data into \(k\) clusters based on distances between data points and centroids. For very large datasets, a serial implementation becomes a bottleneck due to the repeated computation of distances. In this project, I will develop the serial version entirely from scratch as a baseline and then create a parallel version that distributes data across MPI processes and uses Amazon Trainium to accelerate the inner loops. This approach directly applies concepts from distributed-memory programming, load balancing, and hardware acceleration, which are central themes in 15‑418/15‑618.
 
 ---
 
 ## The Challenge
 
-Clustering large-scale data poses several challenges:
-- **Irregular Data Access:** The K-Means algorithm must compute distances between data points and cluster centroids, which can lead to non-uniform memory access patterns.
-- **Communication Overhead:** Aggregating and synchronizing cluster centroids across distributed nodes requires efficient communication, especially as the number of processes increases.
-- **Scalability:** Balancing the workload across multiple nodes and leveraging the capabilities of Amazon Trainium for acceleration is nontrivial and requires careful integration of different parallel systems.
-  
-By addressing these challenges, the project will offer insights into the performance limits of parallel clustering algorithms and the benefits of using specialized hardware.
+Although K-Means is conceptually simple, parallelizing it at scale is nontrivial. Challenges include handling irregular data distributions that lead to load imbalance, synchronizing global centroid updates across MPI processes, and efficiently integrating Trainium to accelerate heavy tensor computations. These factors require careful design to minimize communication overhead and achieve good scalability.
 
 ---
 
 ## Resources
 
-- **Hardware:** Amazon Trainium instances (via the Neuron SDK) and access to a distributed computing cluster (e.g., PSC machines or similar).
-- **Software:** C/C++ for implementation, MPI for distributed communication, and performance profiling tools such as perf and TAU.
-- **Reference Materials:** Research papers on parallel K-Means clustering and relevant sections from the 15-418/15-618 course materials on MPI communication, synchronization, and load balancing.
+- **Hardware:** Amazon Trainium instances (via the Neuron SDK) and PSC/GHC cluster nodes.
+- **Software:** C/C++ (all implementations are built from scratch), MPI for distributed communication, and performance profiling tools such as perf and TAU.
+- **References:** Research papers on parallel K-Means clustering and Trainium optimization techniques, along with course materials from 15‑418/15‑618.
 
 ---
 
 ## Goals and Deliverables
 
-- **Primary Goals:**
-  - Develop a working parallel K-Means clustering algorithm that leverages both distributed-memory parallelism and Amazon Trainium acceleration.
-  - Achieve significant speedup and scalability compared to a serial baseline.
-  - Validate clustering accuracy and performance on both synthetic and real-world datasets.
-
-- **Secondary Goals:**
-  - Produce detailed performance analyses and scalability graphs (e.g., speedup, communication overhead).
-  - Document the impact of different parameters (such as dataset size and process count) on runtime and clustering quality.
-  - Prepare a final report and poster summarizing the methodology, experimental results, and conclusions.
+The primary goal is to develop both a serial and a parallel implementation of K-Means clustering. The serial version, built entirely from scratch, will serve as the baseline. The parallel version will use MPI to distribute the workload and leverage Amazon Trainium to accelerate distance computations. Deliverables include complete source code, detailed performance analysis (with speedup graphs and cache statistics), and a final report along with a poster presentation.
 
 ---
 
 ## Platform Choice
 
-Amazon Trainium is selected for this project because it is specifically designed to accelerate machine learning workloads. Its architecture provides optimized tensor operations, which can greatly benefit the computation-heavy portions of the K-Means algorithm. Combined with MPI-based distributed processing, this platform allows for scalable parallelism that is well suited for large-scale data clustering tasks.
+Amazon Trainium is selected because it is specifically designed to accelerate tensor operations common in machine learning workloads. Its architecture can significantly speed up the inner loop of distance calculations in K-Means, especially when combined with MPI-based distributed processing. This hybrid approach maximizes throughput and scalability for large-scale clustering tasks.
 
 ---
 
 ## Schedule
 
-**Week 1:**
-- Finalize the project proposal and design the overall system architecture.
-- Identify suitable datasets and review relevant literature on parallel K-Means clustering.
-
-**Week 2:**
-- Implement the basic serial version of K-Means clustering.
-- Set up the distributed computing environment and integrate MPI for data partitioning.
-
-**Week 3:**
-- Develop and integrate Amazon Trainium acceleration for the compute-intensive portions.
-- Begin testing and collecting performance data (using perf and TAU).
-
-**Week 4:**
-- Optimize the implementation and conduct extensive scalability tests.
-- Analyze experimental results, generate graphs, and prepare the final report and poster.
+| Date Range        | Task Description                                                                                                                                             |
+|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Mar 26 - Apr 1    | Finalize project design; implement the serial version of K-Means clustering from scratch as the baseline.                                                    |
+| Apr 2 - Apr 8     | Set up the MPI environment; partition the dataset across nodes; integrate initial Trainium-accelerated kernels using the Neuron SDK.                           |
+| Apr 9 - Apr 15    | Refine and optimize the distance computation on Trainium; begin collecting performance data with perf and TAU.                                                |
+| Apr 16 - Apr 22   | Optimize global centroid updates; reduce communication overhead; profile synchronization and load balancing across MPI processes.                            |
+| Apr 23 - Apr 28   | Conduct comprehensive benchmarking; generate detailed performance graphs; prepare the final report and poster for the session on April 29th.                 |
 
 ---
 
-This project is designed to be both challenging and educational, aligning with the core themes of the 15-418/15-618 course, including parallel algorithm design, communication overhead, and performance profiling. I look forward to your feedback on this proposal.
-
+This proposal outlines the scope, challenges, and planned deliverables for the project while integrating key parallel systems concepts from 15‑418/15‑618. I look forward to receiving feedback on this proposal.
