@@ -1,46 +1,50 @@
-# Parallel K-Means Clustering on Amazon Trainium
+# Parallel Monte Carlo Tree Search (MCTS) in Reinforcement Learning with Trainium
 
 **Team:** Daniel Rodriguez (Solo)
 
-**Project URL:** [https://danalejandrorodriguez.github.io/K-means-Clustering-with-Trainium/](https://danalejandrorodriguez.github.io/K-means-Clustering-with-Trainium/)
+**Project URL:** [https://danalejandrorodriguez.github.io/15418-Final/](https://danalejandrorodriguez.github.io/15418-Final/)
 
 ---
 
 ## Summary
 
-We propose to implement a parallel K-Means clustering algorithm that scales to large datasets by leveraging Amazon Trainium for accelerating the compute-intensive distance computations. The project uses MPI for distributed-memory parallelism combined with Trainium’s Neuron SDK to offload critical operations, with the goal of achieving significant speedup and improved clustering efficiency compared to a serial baseline.
+This project will implement a parallel Monte Carlo Tree Search (MCTS) algorithm integrated within a reinforcement learning framework, leveraging Amazon Trainium to accelerate compute-intensive parts of the search. The approach employs distributed-memory programming via MPI alongside Trainium’s Neuron SDK to boost performance and scalability on large decision trees.
 
 ---
 
 ## Background
 
-K-Means clustering partitions data into \(k\) clusters based on distances between data points and centroids. For very large datasets, a serial implementation becomes a bottleneck due to the repeated computation of distances. In this project, I will develop the serial version entirely from scratch as a baseline and then create a parallel version that distributes data across MPI processes and uses Amazon Trainium to accelerate the inner loops. This approach directly applies concepts from distributed-memory programming, load balancing, and hardware acceleration, which are central themes in 15‑418/15‑618.
+Monte Carlo Tree Search (MCTS) is a powerful algorithm used in reinforcement learning and game AI for exploring large search spaces by simulating many random playouts. In many applications, such as complex board games or decision-making systems, the computational cost of exploring the vast search tree can be prohibitive on a single core. In this project, I will build a serial MCTS algorithm from scratch as a baseline and then develop a parallel version that distributes the simulation workload across MPI processes. Amazon Trainium will be employed to accelerate the random playouts and evaluation functions, which are the most compute-intensive parts of the algorithm. This integration will allow us to tackle larger and more complex decision trees than is feasible with conventional hardware alone.
 
 ---
 
 ## The Challenge
 
-Although K-Means is conceptually simple, parallelizing it at scale is nontrivial. Challenges include handling irregular data distributions that lead to load imbalance, synchronizing global centroid updates across MPI processes, and efficiently integrating Trainium to accelerate heavy tensor computations. These factors require careful design to minimize communication overhead and achieve good scalability.
+Parallelizing MCTS is challenging due to:
+- **Irregular Workloads:** The search tree can grow in unpredictable ways, leading to load imbalances.
+- **Synchronization Overhead:** Global updates (such as propagating rewards and updating tree nodes) require careful synchronization to avoid stalling the parallel processes.
+- **Integration with Trainium:** Offloading compute-intensive playouts to Trainium requires efficient data transfers and overlap of computation and communication.
+These challenges necessitate a design that minimizes global communication while fully exploiting Trainium’s acceleration capabilities.
 
 ---
 
 ## Resources
 
-- **Hardware:** Amazon Trainium instances (via the Neuron SDK) and PSC/GHC cluster nodes.
-- **Software:** C/C++ (all implementations are built from scratch), MPI for distributed communication, and performance profiling tools such as perf and TAU.
-- **References:** Research papers on parallel K-Means clustering and Trainium optimization techniques, along with course materials from 15‑418/15‑618.
+- **Hardware:** Amazon Trainium instances (using the Neuron SDK) and PSC/GHC cluster nodes.
+- **Software:** C/C++ for the core implementation, MPI for distributed communication, and standard profiling tools (perf and TAU) for performance evaluation.
+- **References:** Research papers on parallel MCTS, reinforcement learning, and Trainium acceleration techniques, alongside relevant 15‑418/15‑618 course materials.
 
 ---
 
 ## Goals and Deliverables
 
-The primary goal is to develop both a serial and a parallel implementation of K-Means clustering. The serial version, built entirely from scratch, will serve as the baseline. The parallel version will use MPI to distribute the workload and leverage Amazon Trainium to accelerate distance computations. Deliverables include complete source code, detailed performance analysis (with speedup graphs and cache statistics), and a final report along with a poster presentation.
+The primary goal is to develop both a serial and a parallel version of the MCTS algorithm integrated within a reinforcement learning framework. The serial version will be implemented from scratch as a baseline. The parallel version will use MPI to distribute simulations and leverage Amazon Trainium to accelerate playout evaluations. Deliverables include the complete source code, detailed performance analysis with scalability graphs, and a final report and poster summarizing methodology and experimental results.
 
 ---
 
 ## Platform Choice
 
-Amazon Trainium is selected because it is specifically designed to accelerate tensor operations common in machine learning workloads. Its architecture can significantly speed up the inner loop of distance calculations in K-Means, especially when combined with MPI-based distributed processing. This hybrid approach maximizes throughput and scalability for large-scale clustering tasks.
+Amazon Trainium is chosen because its architecture is optimized for tensor and matrix operations commonly found in deep learning and reinforcement learning workloads. By integrating Trainium with an MPI-based distributed system, this project can efficiently accelerate the computationally heavy components of MCTS while scaling the overall search process.
 
 ---
 
@@ -48,12 +52,12 @@ Amazon Trainium is selected because it is specifically designed to accelerate te
 
 | Date Range        | Task Description                                                                                                                                             |
 |-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Mar 26 - Apr 1    | Finalize project design; implement the serial version of K-Means clustering from scratch as the baseline.                                                    |
-| Apr 2 - Apr 8     | Set up the MPI environment; partition the dataset across nodes; integrate initial Trainium-accelerated kernels using the Neuron SDK.                           |
-| Apr 9 - Apr 15    | Refine and optimize the distance computation on Trainium; begin collecting performance data with perf and TAU.                                                |
-| Apr 16 - Apr 22   | Optimize global centroid updates; reduce communication overhead; profile synchronization and load balancing across MPI processes.                            |
+| Mar 26 - Apr 1    | Finalize project design; implement the serial MCTS algorithm (from scratch) as the baseline.                                                                 |
+| Apr 2 - Apr 8     | Set up the MPI environment and partition the search space across processes; integrate initial Trainium-accelerated kernels using the Neuron SDK.            |
+| Apr 9 - Apr 15    | Refine and optimize the Trainium-accelerated playout evaluations; begin collecting performance data using perf and TAU.                                       |
+| Apr 16 - Apr 22   | Optimize global tree updates and reduce communication overhead; profile synchronization and load balancing across MPI processes.                             |
 | Apr 23 - Apr 28   | Conduct comprehensive benchmarking; generate detailed performance graphs; prepare the final report and poster for the session on April 29th.                 |
 
 ---
 
-This proposal outlines the scope, challenges, and planned deliverables for the project while integrating key parallel systems concepts from 15‑418/15‑618. I look forward to receiving feedback on this proposal.
+This project is designed to address complex challenges in parallel decision-making and reinforcement learning, leveraging both MPI and Amazon Trainium. I look forward to your feedback on this proposal.
