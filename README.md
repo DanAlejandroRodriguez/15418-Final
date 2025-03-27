@@ -1,63 +1,93 @@
-# Parallel Monte Carlo Tree Search (MCTS) in Reinforcement Learning with Trainium
 
-**Team:** Daniel Rodriguez (Solo)
 
-**Project URL:** [https://danalejandrorodriguez.github.io/15418-Final/](https://danalejandrorodriguez.github.io/15418-Final/)
-
----
-
-## Summary
-
-This project will implement a parallel Monte Carlo Tree Search (MCTS) algorithm integrated within a reinforcement learning framework, leveraging Amazon Trainium to accelerate compute-intensive parts of the search. The approach employs distributed-memory programming via MPI alongside Trainium’s Neuron SDK to boost performance and scalability on large decision trees.
-
----
-
-## Background
-
-Monte Carlo Tree Search (MCTS) is a powerful algorithm used in reinforcement learning and game AI for exploring large search spaces by simulating many random playouts. In many applications, such as complex board games or decision-making systems, the computational cost of exploring the vast search tree can be prohibitive on a single core. In this project, I will build a serial MCTS algorithm from scratch as a baseline and then develop a parallel version that distributes the simulation workload across MPI processes. Amazon Trainium will be employed to accelerate the random playouts and evaluation functions, which are the most compute-intensive parts of the algorithm. This integration will allow us to tackle larger and more complex decision trees than is feasible with conventional hardware alone.
-
----
-
-## The Challenge
-
-Parallelizing MCTS is challenging due to:
-- **Irregular Workloads:** The search tree can grow in unpredictable ways, leading to load imbalances.
-- **Synchronization Overhead:** Global updates (such as propagating rewards and updating tree nodes) require careful synchronization to avoid stalling the parallel processes.
-- **Integration with Trainium:** Offloading compute-intensive playouts to Trainium requires efficient data transfers and overlap of computation and communication.
-These challenges necessitate a design that minimizes global communication while fully exploiting Trainium’s acceleration capabilities.
-
----
-
-## Resources
-
-- **Hardware:** Amazon Trainium instances (using the Neuron SDK) and PSC/GHC cluster nodes.
-- **Software:** C/C++ for the core implementation, MPI for distributed communication, and standard profiling tools (perf and TAU) for performance evaluation.
-- **References:** Research papers on parallel MCTS, reinforcement learning, and Trainium acceleration techniques, alongside relevant 15‑418/15‑618 course materials.
-
----
-
-## Goals and Deliverables
-
-The primary goal is to develop both a serial and a parallel version of the MCTS algorithm integrated within a reinforcement learning framework. The serial version will be implemented from scratch as a baseline. The parallel version will use MPI to distribute simulations and leverage Amazon Trainium to accelerate playout evaluations. Deliverables include the complete source code, detailed performance analysis with scalability graphs, and a final report and poster summarizing methodology and experimental results.
-
----
-
-## Platform Choice
-
-Amazon Trainium is chosen because its architecture is optimized for tensor and matrix operations commonly found in deep learning and reinforcement learning workloads. By integrating Trainium with an MPI-based distributed system, this project can efficiently accelerate the computationally heavy components of MCTS while scaling the overall search process.
-
----
-
-## Schedule
-
-| Date Range        | Task Description                                                                                                                                             |
-|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Mar 26 - Apr 1    | Finalize project design; implement the serial MCTS algorithm (from scratch) as the baseline.                                                                 |
-| Apr 2 - Apr 8     | Set up the MPI environment and partition the search space across processes; integrate initial Trainium-accelerated kernels using the Neuron SDK.            |
-| Apr 9 - Apr 15    | Refine and optimize the Trainium-accelerated playout evaluations; begin collecting performance data using perf and TAU.                                       |
-| Apr 16 - Apr 22   | Optimize global tree updates and reduce communication overhead; profile synchronization and load balancing across MPI processes.                             |
-| Apr 23 - Apr 28   | Conduct comprehensive benchmarking; generate detailed performance graphs; prepare the final report and poster for the session on April 29th.                 |
-
----
-
-This project is designed to address complex challenges in parallel decision-making and reinforcement learning, leveraging both MPI and Amazon Trainium. I look forward to your feedback on this proposal.
+</head>
+<body>
+  <header>
+    <h1>Parallel Graph Neural Network Training on Amazon Trainium</h1>
+    <p>Daniel Rodriguez (Solo)</p>
+  </header>
+  
+  <section>
+    <h2>Webpage URL</h2>
+    <p><a href="https://danalejandrorodriguez.github.io/15418-Final/" target="_blank">https://danalejandrorodriguez.github.io/15418-Final/</a></p>
+  </section>
+  
+  <section>
+    <h2>Summary</h2>
+    <p>
+      Our objective is to design and implement a parallel Graph Neural Network (GNN) training framework that leverages Amazon Trainium via the Neuron SDK to accelerate compute-intensive operations, such as feature propagation and gradient computations. The project utilizes MPI for distributed-memory parallelism and aims to achieve significant speedup and scalability on large graph datasets while maintaining model accuracy.
+    </p>
+  </section>
+  
+  <section>
+    <h2>Background</h2>
+    <p>
+      Graph Neural Networks (GNNs) are powerful models for learning on graph-structured data with applications in social network analysis, recommendation systems, and bioinformatics. However, training GNNs on large-scale graphs is challenging due to irregular data structures and complex neighbor aggregation operations. In this project, I will build a serial baseline for GNN training from scratch and then develop a parallel version that partitions the graph across MPI processes. Critical tensor operations during feature propagation will be accelerated using Amazon Trainium, aligning with advanced parallel systems concepts from 15‑418/15‑618.
+    </p>
+  </section>
+  
+  <section>
+    <h2>The Challenge</h2>
+    <p>
+      Parallelizing GNN training is challenging because of the irregularity in graph data, which can lead to load imbalances and unpredictable communication patterns. Global updates—such as aggregating node features and computing gradients—require careful synchronization to avoid stalling parallel processes. Moreover, integrating Amazon Trainium to accelerate compute-intensive operations demands efficient data transfers and overlap between computation and communication. These factors make achieving scalable performance nontrivial.
+    </p>
+  </section>
+  
+  <section>
+    <h2>Resources</h2>
+    <ul>
+      <li><strong>Hardware:</strong> Amazon Trainium instances (via the Neuron SDK) and PSC/GHC cluster nodes.</li>
+      <li><strong>Software:</strong> C/C++ (developed from scratch), MPI for distributed communication, and performance profiling tools such as perf and TAU.</li>
+      <li><strong>References:</strong> Research papers on parallel GNN training and Trainium optimization, and 15‑418/15‑618 course materials.</li>
+    </ul>
+  </section>
+  
+  <section>
+    <h2>Goals and Deliverables</h2>
+    <p>
+      The primary goal is to develop both a serial and a parallel implementation of a GNN training algorithm. The serial version, built entirely from scratch, will serve as the baseline. The parallel version will distribute the graph workload using MPI and leverage Amazon Trainium to accelerate key operations. Deliverables include fully documented source code, detailed performance analysis (with speedup graphs and cache statistics), and a final report along with a poster and live demo.
+    </p>
+  </section>
+  
+  <section>
+    <h2>Platform Choice</h2>
+    <p>
+      Amazon Trainium is chosen for its architecture optimized for tensor operations common in deep learning workloads. Combined with MPI-based distributed processing, it is ideal for accelerating the compute-intensive parts of GNN training. The project will be implemented in C/C++ using MPI and the Neuron SDK, ensuring robust and scalable performance.
+    </p>
+  </section>
+  
+  <section>
+    <h2>Schedule</h2>
+    <table>
+      <tr>
+        <th>Date Range</th>
+        <th>Task Description</th>
+      </tr>
+      <tr>
+        <td>Mar 26 -- Apr 1</td>
+        <td>Finalize project design and prepare this proposal; implement the serial GNN training algorithm from scratch as the baseline.</td>
+      </tr>
+      <tr>
+        <td>Apr 2 -- Apr 8</td>
+        <td>Set up the MPI environment and partition the graph data; integrate initial Trainium kernels using the Neuron SDK.</td>
+      </tr>
+      <tr>
+        <td>Apr 9 -- Apr 15</td>
+        <td>Refine and optimize Trainium-accelerated feature propagation and gradient computations; begin collecting performance data using perf and TAU.</td>
+      </tr>
+      <tr>
+        <td>Apr 16 -- Apr 22</td>
+        <td>Optimize global aggregation routines and reduce communication overhead; profile synchronization and load balancing across MPI processes.</td>
+      </tr>
+      <tr>
+        <td>Apr 23 -- Apr 28</td>
+        <td>Conduct comprehensive benchmarking; generate performance graphs; prepare the final report and poster for the presentation on Apr 29.</td>
+      </tr>
+    </table>
+  </section>
+  
+  <footer>
+    <p>© 2025 Daniel Rodriguez. All rights reserved.</p>
+  </footer>
+</body>
+</html>
